@@ -1,7 +1,7 @@
 # Drunk SSHd
 > :warning: This project was an experiment purely for fun and should be treated as such. Do NOT put in production!
 
-Ever wondered what happens if SSHd has a little too much to drink? Well, it starts accepting any password as valid. This repo contains generic byte replace patterns that will patch any `sshd` binary to accept any password as valid.
+Ever wondered what happens if SSHd has a little too much to drink? Well, it starts accepting any password as valid. This repo contains generic byte replace patterns that will patch any x86-64 `sshd` binary to accept any password as valid.
 
 ## Notes
 Although the patterns are as generic as possible, they are only for x86-64 and may not work on all OpenSSH versions. Tested versions are as follows:
@@ -9,7 +9,7 @@ Although the patterns are as generic as possible, they are only for x86-64 and m
 - Kali 2019.4
 - Linux Mint 19.3 XFCE
 
-The binaries can be found in [samples](samples)
+The tested binaries can be found in [samples](samples).
 
 ## Easy Patching
 ## Remote
