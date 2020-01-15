@@ -11,7 +11,10 @@ Although the patterns are as generic as possible, they are only for x86-64 and m
 
 The binaries can be found in [samples](samples)
 
-## Easy patching
+## Easy Patching
+## Remote
+Please refer to the [Ansible](ANSIBLE.md) doc.
+## Local
 Use my [byte pattern patcher](https://github.com/ViRb3/byte-pattern-patcher) with [this patch file](patch-drunk-sshd.json) and target your `sshd` binary. You should see `three` replaced occurances, `one` for each pattern.
 
 ## Methodology

@@ -1,0 +1,58 @@
+---
+- hosts: all
+  vars:
+    # sudo password, if applicable
+    ansible_become_pass: admin
+
+  tasks:
+  - name: Download patcher
+    get_url:
+      url: https://github.com/ViRb3/byte-pattern-patcher/releases/download/v1.02/byte-pattern-patcher-amd64
+      dest: /tmp/patcher
+      mode: '700'
+
+  - name: Copy patch file
+    copy:
+      src: patch-drunk-sshd.json
+      dest: /tmp/patch.json
+      mode: '600'
+
+  - name: Get sshd path
+    command: which sshd
+    register: sshd_path
+
+  - name: Make sshd local copy
+    copy:
+      src: "{{ sshd_path.stdout }}"
+      remote_src: true
+      dest: /tmp/sshd
+      mode: '600'
+
+  - name: Run patch and validate result
+    command:
+      argv:
+        - /tmp/patcher
+        - -p
+        - /tmp/patch.json
+        - -t
+        - /tmp/sshd
+    register: patch_result
+    failed_when:
+      - '"Replaced 3 occurrences in total" not in patch_result.stdout'
+
+  - name: Replace sshd with patched local copy
+    copy:
+      src: /tmp/sshd
+      remote_src: true
+      dest: "{{ sshd_path.stdout }}"
+    become: true
+
+  - name: Cleanup
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+    - /tmp/patcher
+    - /tmp/patch.json
+    - /tmp/sshd
+    - /tmp/sshd.bak
